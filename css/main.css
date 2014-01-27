@@ -1,0 +1,141 @@
+html, body {
+	margin:0;
+	padding:0;
+	height: 100%;
+}
+
+body {
+	background-color: #f4f5f6;
+}
+
+#container {
+	position: absolute;
+	top: 50%;
+	margin-top: -228px;
+	left: 0;
+	width: 100%;
+}
+
+#value {
+	width: 100%;
+	color: #444;
+	font-family: 'Open Sans', Arial, sans-serif;
+	text-align: center;
+	margin: 0 auto;
+	height: 456px;
+}
+
+#coincap {
+	color: #444;
+	border: 0px;
+	margin: -30px auto 0;
+}
+
+.coincaptd {
+	width: 229px;
+	text-align: center; 
+}
+
+.satoshi-price {
+	font-size: 120px;
+	margin: 0;
+}
+
+.sat-price-explanation {
+	font-size: 15px;
+	margin: 0 0 13px;
+}
+
+.usd-price {
+	font-size: 50px;
+	margin-top: -2px;
+	opacity: 0.8;
+}
+
+.difdata {
+	font-size: 17px;
+	opacity: 0.8;
+	margin: -10px 0;
+}
+
+.current-time {
+	font-size: 12px;
+	opacity: 0.4;
+	margin: 25px 0 4px;
+}
+
+.donationaddress{
+	font-size: 13px;
+	opacity: 0.6;
+}
+
+h1 {
+	margin: 0;
+}
+
+@media screen and (max-width: 450px) {
+
+	#container {
+		margin-top: -200px;
+	}
+
+	#value {
+		height: 400px;
+	}
+
+	#coincap {
+		margin: -10px auto 0;
+	}
+
+	.coincaptd {
+		width: 170px;
+	}
+
+	.satoshi-price {
+		font-size: 40px;
+	}
+
+	.usd-price {
+		font-size: 35px;
+	}
+
+	.current-time {
+		font-size: 10px;
+	}
+
+}
+
+@media screen and (max-width: 420px) {
+
+	#container {
+		margin-top: -185px;
+	}
+
+	#value {
+		height: 370px;
+	}
+
+	#coincap {
+		margin: -5px auto 0;
+	}
+
+	.coincaptd {
+		width: 160px;
+	}
+
+	.satoshi-price {
+		font-size: 35px;
+	}
+
+	.usd-price {
+		font-size: 30px;
+	}
+
+	.difdata {
+		font-size: 12px;
+	}
+
+	.current-time {
+		font-size: 10px;
+	}
+}

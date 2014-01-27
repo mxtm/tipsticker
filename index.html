@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>FedoraCoin Ticker</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans">
+		<link rel="stylesheet" href="css/main.css">
+
+		<meta name="description" content="A live FedoraCoin ticker">
+
+		<meta property="og:title" content="FedoraCoin">
+		<meta property="og:type" content="website">
+		<meta property="og:image" content="favicon.png">
+		<meta property="og:url" content="http://tips.mxtm.me">
+		<meta property="og:description" content="Get the latest price for FedoraCoin - Live FedoraCoin ticker">
+
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+	</head>
+	<body>
+		<div id="container">
+		<div id="value">
+			<p class="satoshi-price">§0 &ndash; §0 &ndash; §0</p>
+			<p class="sat-price-explanation">Cryptsy &ndash; Coined Up &ndash; Average</p>
+			<p class="usd-price">$0</p>
+			<table id="coincap">
+				<tbody>
+					<tr>
+						<td class="coincaptd">
+							<p class="difdata difficulty">Difficulty<br>0</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+				
+			<p class="current-time">Has not been updated yet.</p>
+
+			<div class="address"><p class="donationaddress">Donate: EMXTMdq5W9xPedbhNAx2DQVzHsBZDXvGYo / EVbBDtycdadQhuftqg5N9K7Jzc96FhV3s7</p></div>
+		</div>
+		</div>
+		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript">
+			var lastupdated = Math.round(Date.now() / 1000);
+			function updateInfo() {
+				$.getJSON("data/combojsonv2.php",function(json,status){  
+					$(".satoshi-price").html("§" + json.cryptsyltcsatprice + " &ndash; §" + json.coinedupltcsatprice + " &ndash; §" + json.avgltcsatprice);
+					$(".usd-price").html("$" + json.tipsusdpricestr);
+					$(".difficulty").html("Difficulty<br>" + json.difficulty);
+					$(document).attr("title", "§" + json.avgltcsatprice + " | FedoraCoin Ticker");
+					lastupdated = Math.round(Date.now() / 1000);
+				});
+			}
+			function updateTime() {
+				var currenttime = Math.round(Date.now() / 1000);
+				var timesinceupdate = currenttime - lastupdated;
+				if (timesinceupdate == 1) $(".current-time").html("Last updated 1 second ago.");
+				else $(".current-time").html("Last updated " + timesinceupdate + " seconds ago.");
+			}
+			$(document).ready(function() {
+					updateInfo();
+					updateTime();
+					setInterval(updateInfo, 10000);
+					setInterval(updateTime, 750);
+			});
+		</script>
+	</body>
+</html>
