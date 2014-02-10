@@ -69,6 +69,11 @@ body {
 	opacity: 0.6;
 }
 
+.ad {
+	text-align: center;
+	margin: 0 auto;
+}
+
 h1 {
 	margin: 0;
 }
