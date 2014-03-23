@@ -21,8 +21,8 @@
 	<body>
 		<div id="container">
 		<div id="value">
-			<p class="satoshi-price">§0 &ndash; §0 &ndash; §0</p>
-			<p class="sat-price-explanation">Cryptsy &ndash; Coined Up &ndash; Average</p>
+			<p class="price">§0 &ndash; §0 &ndash; §0</p>
+			<p class="price-explanation">Cryptsy &ndash; Bter &ndash; Average</p>
 			<p class="usd-price">$0</p>
 			<table id="coincap">
 				<tbody>
@@ -46,8 +46,8 @@
 		<script type="text/javascript">
 			var lastupdated = Math.round(Date.now() / 1000);
 			function updateInfo() {
-				$.getJSON("data/combojsonv2.php",function(json,status){  
-					$(".satoshi-price").html("§" + json.cryptsyltcsatprice + " &ndash; §" + json.coinedupltcsatprice + " &ndash; §" + json.avgltcsatprice);
+				$.getJSON("data/combojson.php",function(json,status){  
+					$(".satoshi-price").html("§" + json.cryptsyltcsatprice + " &ndash; §" + json.bterltcsatprice + " &ndash; §" + json.avgltcsatprice);
 					$(".usd-price").html("$" + json.tipsusdpricestr);
 					$(".difficulty").html("Difficulty<br>" + json.difficulty);
 					$(document).attr("title", "§" + json.avgltcsatprice + " | FedoraCoin Ticker");

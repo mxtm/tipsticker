@@ -3,7 +3,7 @@ function difficulty() {
 	if (apc_exists('difficulty')) {
     	$difficulty = apc_fetch('difficulty');
 	} else {
-    	$json = file_get_contents('http://chickenstrips.net/index.php?page=api&action=getdifficulty&api_key=');
+    	$json = file_get_contents('http://chickenstrips.net/index.php?page=api&action=getdifficulty&api_key=38f2a4cb74f3e4cad68e40440c325b82ab01334b6de56c29749ad61534e5726e');
 		$json = json_decode($json);
 
 		$difficulty = $json->getdifficulty->data;
@@ -24,79 +24,68 @@ function ltcusdprice() {
 	  
 		$ltcusdprice = $json->ticker->avg;
 
-		//store for 5 mins
-		apc_store('ltcusdprice', $ltcusdprice, 300);
+		//store for 3 mins
+		apc_store('ltcusdprice', $ltcusdprice, 180);
 	}
 
 	return $ltcusdprice;
 }
 
-function tipsltcsatprice() {
-	if (apc_exists('tipsltcsatprice')) {
-		$tipsltcsatprice = apc_fetch('tipsltcsatprice');
+function cryptsyltcsatprice() {
+	if (apc_exists('cryptsyltcsatprice')) {
+		$cryptsyltcsatprice = apc_fetch('cryptsyltcsatprice');
 	} else {
-		$cryptsyrawdata = file_get_contents("http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=147");
+		$rawdata = file_get_contents("http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=147");
 
-		$cryptsyjson = json_decode($cryptsyrawdata);
+		$json = json_decode($rawdata);
 
-		$cryptsytipsltcsatprice = $cryptsyjson->return->markets->TIPS->lasttradeprice / 0.00000001;
+		$cryptsyltcsatprice = $json->return->markets->TIPS->lasttradeprice / 0.00000001;
 
-		/* $coinedupapikey = "";
-		$coinedupapisecret = "";
-
-		$coinedupparams = array();  
-		$coinedupparams['requestKey'] = (string)microtime();
-		$coinedupparams['market'] = "TIPS_LTC";
-		$coinedupparams['fromTime'] = time() - (1 * 24 * 60 * 60);
-									  
-		$coineduppostdata = http_build_query($coinedupparams, '', '&');
-		$coinedupsign = hash_hmac("sha512", $coineduppostdata, $coinedupapisecret);
-		$coinedupheaders = array('Sign: ' . $coinedupsign, 'Key: ' . $coinedupapikey);
-
-		static $ch = null;
-
-		if (is_null($ch)) {
-			$ch = curl_init();
-
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 ('. php_uname('s') . '; PHP/' . phpversion() . ')');
-		}
-
-		curl_setopt($ch, CURLOPT_URL, "https://api.coinedup.com/trades");
-
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $coineduppostdata);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $coinedupheaders);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-
-		$coinedupresult = curl_exec($ch);
-
-		$coinedupjson = json_decode($coinedupresult, true);
-
-		$coineduptrade = end($coinedupjson['value']);
-
-		$coineduptipsltcsatprice = $coineduptrade['rate'] / 0.00000001;
-
-		if ($cryptsytipsltcsatprice == 0) { $tipsltcsatprice = $coineduptipsltcsatprice; }
-		elseif ($coineduptipsltcsatprice == 0) { $tipsltcsatprice = $cryptsytipsltcsatprice;  }
-		else { $tipsltcsatprice = round(($cryptsytipsltcsatprice + $coineduptipsltcsatprice) / 2); } */
-
-		$tipsltcsatprice = $cryptsytipsltcsatprice;
-
-		//store for 20 seconds
-		apc_store('tipsltcsatprice', $tipsltcsatprice, 20);
+		apc_store('cryptsyltcsatprice', $cryptsyltcsatprice, 20);
 	}
 
-	return $tipsltcsatprice;
+	return $cryptsyltcsatprice;
+}
+
+function bterltcsatprice() {
+	if (apc_exists('bterltcsatprice')) {
+		$bterltcsatprice = apc_fetch('bterltcsatprice');
+	} else {
+		$rawdata = file_get_contents("http://data.bter.com/api/1/ticker/tips_ltc");
+
+		$json = json_decode($rawdata);
+
+		$bterltcsatprice = $json->last / 0.00000001;
+
+		apc_store('bterltcsatprice', $bterltcsatprice, 20);
+	}
+
+	return $bterltcsatprice;
+}
+
+function avgltcsatprice() {
+	if (apc_exists('avgltcsatprice')) {
+		$avgltcsatprice = apc_fetch('avgltcsatprice');
+	} else {
+		if (cryptsyltcsatprice() == 0) { $avgltcsatprice = bterltcsatprice(); }
+		elseif (bterltcsatprice() == 0) { $avgltcsatprice = cryptsyltcsatprice(); }
+		else { $avgltcsatprice = round((cryptsyltcsatprice() + bterltcsatprice()) / 2); }
+
+		//store for 20 seconds
+		apc_store('avgltcsatprice', $avgltcsatprice, 20);
+	}
+
+	return $avgltcsatprice;
 }
 
 function tipsusdprice() {
 	if (apc_exists('tipsusdprice')) {
 		$tipsusdprice = apc_fetch('tipsusdprice');
 	} else {
-		$tipsltcprice = tipsltcsatprice() * 0.00000001;
+		$tipsltcprice = avgltcsatprice() * 0.00000001;
 		$tipsusdprice = ltcusdprice() * $tipsltcprice;
 
-		// store for 30 seconds
+		// store for 20 seconds
 		apc_store('tipsusdprice', $tipsusdprice, 20);
 	}
 

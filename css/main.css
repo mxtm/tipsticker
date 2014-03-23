@@ -36,12 +36,12 @@ body {
 	text-align: center; 
 }
 
-.satoshi-price {
+.price {
 	font-size: 120px;
 	margin: 0;
 }
 
-.sat-price-explanation {
+.price-explanation {
 	font-size: 15px;
 	margin: 0 0 13px;
 }
@@ -96,7 +96,7 @@ h1 {
 		width: 170px;
 	}
 
-	.satoshi-price {
+	.price {
 		font-size: 40px;
 	}
 
@@ -128,7 +128,7 @@ h1 {
 		width: 160px;
 	}
 
-	.satoshi-price {
+	.price {
 		font-size: 35px;
 	}
 
