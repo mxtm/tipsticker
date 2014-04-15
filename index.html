@@ -47,7 +47,7 @@
 			var lastupdated = Math.round(Date.now() / 1000);
 			function updateInfo() {
 				$.getJSON("data/combojson.php",function(json,status){  
-					$(".satoshi-price").html("§" + json.cryptsyltcsatprice + " &ndash; §" + json.bterltcsatprice + " &ndash; §" + json.avgltcsatprice);
+					$(".price").html("§" + json.cryptsyltcsatprice + " &ndash; §" + json.bterltcsatprice + " &ndash; §" + json.avgltcsatprice);
 					$(".usd-price").html("$" + json.tipsusdpricestr);
 					$(".difficulty").html("Difficulty<br>" + json.difficulty);
 					$(document).attr("title", "§" + json.avgltcsatprice + " | FedoraCoin Ticker");
